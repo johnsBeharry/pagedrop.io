@@ -5,12 +5,16 @@ import dropboxClient from './controllers/dropbox';
 const routes = express();
 
 routes.get('/dropbox', (req, res) => {
-	dropboxClient.list('')
-		.then(folder=>{
-		    console.log(folder.entries);
+	dropboxClient.list('/')
+		.then(contents=>{
+			let contents = contents.entries;
+			let folders = contents.filter(file => file['.tag'] === 'folder');
+			let files = contents.filter(file => file['.tag'] === 'file');
+			console.log('folders', folders);
+			console.log('files', files);
 		})
 		.catch(err=>{
-		    console.log(err);
+			console.log(err);
 		});
 	res.send('dropbox...');
 });
